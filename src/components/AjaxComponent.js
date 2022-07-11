@@ -40,10 +40,18 @@ const getUsuariosEstaticos = () => {
           console.log("Error");
       })
   }
+
+  const getUsuariosAjaxAW = async() => {
+    const peticion = await fetch("https://reqres.in/api/users?page=1");
+    const { data } = await peticion.json();
+    
+    setUsuarios(data);
+  }
   
   useEffect(() => {
     //getUsuariosEstaticos();
-    getUsuariosAjaxPms();
+    //getUsuariosAjaxPms();
+    getUsuariosAjaxAW();
   },[])
 
   return (
