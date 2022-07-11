@@ -28,9 +28,22 @@ const getUsuariosEstaticos = () => {
     
   ]);
   }
+
+  const getUsuariosAjaxPms = () => {
+    fetch("https://reqres.in/api/users?page=1")
+      .then(respuesta => respuesta.json())
+      .then(resultado_final => {          
+        setUsuarios(resultado_final.data)
+        console.log(usuarios)
+      },
+        error => {
+          console.log("Error");
+      })
+  }
   
   useEffect(() => {
-    getUsuariosEstaticos();
+    //getUsuariosEstaticos();
+    getUsuariosAjaxPms();
   },[])
 
   return (
