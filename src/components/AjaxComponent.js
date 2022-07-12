@@ -4,6 +4,7 @@ export const AjaxComponent = () => {
 
   const [usuarios, setUsuarios] = useState([]);
   const [cargando, setCargando] = useState(false);
+  const [errores, setErrores] = useState("");
 
   // Generico/básico
   const getUsuariosEstaticos = () => {
@@ -43,12 +44,16 @@ export const AjaxComponent = () => {
   }
 
   const getUsuariosAjaxAW = () => {
-      
     setTimeout(async () => {
-      const peticion = await fetch("https://reqres.in/api/users?page=1");
-      const { data } = await peticion.json();
-      setUsuarios(data);
-      setCargando(false);
+      try {
+        const peticion = await fetch("https://reqres.in/api/users?page=1");
+        const { data } = await peticion.json();
+        setUsuarios(data);
+        setCargando(false);
+      } catch (error) {
+        console.log(error)
+        setErrores(error.message);
+      }
     }, 5000);
   }
   
@@ -58,14 +63,23 @@ export const AjaxComponent = () => {
     getUsuariosAjaxAW();
   }, [])
 
-  if (cargando === true) {
+  if (errores !== "") {
+    //Cuando pasa algun error
+      return (
+      <div className='errores'>
+        {errores}
+      </div>
+    );
+
+  } else if (cargando == true) {
     //Cuando esta todo cargando
-    return (
+      return (
       <div className='cargando'>
         Cargando datos...
       </div>
     );
-  } else {
+    
+  } else if ( cargando == false && errores === "") {
     //Cuando toda ha ido bien
     return (
       <div>
